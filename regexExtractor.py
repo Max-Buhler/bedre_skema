@@ -9,12 +9,17 @@ class RegexExtractor:
     self.teamRegex = r"Hold: ([A-Z][0-9][a-z] [A-Z]{2,3})"
 
   def getData(self, indhold):
-    result = {
-      "date": re.search(self.dateRegex, indhold).group(0), 
-      "timeFrom": re.search(self.timeRegex, indhold).group(1), 
-      "timeTo": re.search(self.timeRegex, indhold).group(2), 
-      "teacher": re.search(self.teacherRegex, indhold).group(1), 
-      "room": re.search(self.roomRegex, indhold).group(0), 
-      "team": re.search(self.teamRegex, indhold).group(0), 
-    }
-    return result
+      result = {
+          "date": self._extract_group(self.dateRegex, indhold, 0),
+          "timeFrom": self._extract_group(self.timeRegex, indhold, 1),
+          "timeTo": self._extract_group(self.timeRegex, indhold, 2),
+          "teacher": self._extract_group(self.teacherRegex, indhold, 1),
+          "room": self._extract_group(self.roomRegex, indhold, 0),
+          "team": self._extract_group(self.teamRegex, indhold, 0),
+      }
+      return result
+
+  def _extract_group(self, regex, text, group_num):
+      """Helper function to safely extract a regex match group."""
+      match = re.search(regex, text)
+      return match.group(group_num) if match else None
