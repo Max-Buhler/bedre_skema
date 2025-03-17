@@ -17,11 +17,13 @@ class UserModel():
       'skema': 'https://www.lectio.dk/lectio/518/skemany.aspx'
     }
   def getSkema(self, req):
-    self.scraper.getHTML(self.urldict[req['type']])
+    self.scraper.getHTML(self.urldict[req['type']], req.get("week", None), req.get("year", None))
     modulesList = self.scraper.getModules()
     moduleData = []
     for module in modulesList:
       moduleData.append(self.regexExtractor.getData(module))
     return moduleData
+#example
 um = UserModel()
+print(um.getSkema({'type': 'skema', 'week': '13', 'year': '2025'}))
 print(um.getSkema({'type': 'skema'}))

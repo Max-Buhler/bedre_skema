@@ -6,8 +6,14 @@ class Scraper:
     self.cookies = cookies
 
 
-  def getHTML(self, URL):
-    response = requests.get(URL, cookies=self.cookies)
+  def getHTML(self, URL, week, year):
+    if(week is None):
+      response = requests.get(URL, cookies=self.cookies)
+    else:
+      if(year is None):
+        response = requests.get(URL + "?week=" + week + "2025", cookies=self.cookies)
+      else:
+        response = requests.get(URL + "?week=" + week + year, cookies=self.cookies)
     response.encoding = "utf-8"
     clean_text = response.text.encode("utf-8", "ignore").decode("utf-8")
     self.soup = BeautifulSoup(clean_text, "html.parser")
