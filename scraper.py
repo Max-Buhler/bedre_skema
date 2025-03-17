@@ -14,7 +14,7 @@ class Scraper:
 
   def getModules(self):
     modules = []
-    for module in self.soup.findAll("a", attrs={"class":"s2skemabrik"}):
+    for module in self.soup.findAll("a", attrs={"class":"s2skemabrik", "class": "s2bgbox"}):
       moduel_text = module.get("data-tooltip", "")
       if moduel_text:
         modules.append(moduel_text)
