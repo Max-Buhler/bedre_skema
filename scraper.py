@@ -1,45 +1,30 @@
 from bs4 import BeautifulSoup
 import requests
-from dotenv import load_dotenv
-import os
-load_dotenv()
-sessionId = os.getenv('SESSION_ID')
-autoLoginKey = os.getenv('AUTO_LOGIN_KEY')
 
 class Scraper:
-  def __init__(self, sessionId, autoLoginKey, URL):
-    self.cookies = { 
-      "ASP.NET_SessionId": sessionId,
-      "autologinkeyV2": autoLoginKey,
-    }
-    self.URL = URL
-    self.soup = self.getHTML()
-    print(self.soup)
-    self.modules = []
+  def __init__(self, cookies):
+    self.__cookies = cookies
 
-
-  def getHTML(self):
-    response = requests.get(self.URL, cookies=self.cookies)
-    response.encoding = "utf-8"
+  #lectio's html-kode findes og defineres til __soup
+  def getHTML(self, URL, week, year):
+    #via betingelser findes der ud af om år og uge er defineret
+    if(week is None):
+      response = requests.get(URL, cookies=self.__cookies)
+    else:
+      if(year is None):
+        response = requests.get(URL + "?week=" + week + "2025", cookies=self.__cookies)
+      else:
+        response = requests.get(URL + "?week=" + week + "2025", cookies=self.__cookies)
+    #html-koden laves om til en string
     clean_text = response.text.encode("utf-8", "ignore").decode("utf-8")
-    clean_text = response.text.lstrip("\ufeff")
-    soup = BeautifulSoup(clean_text, "html.parser")
-    return soup
+    self.__soup = BeautifulSoup(clean_text, "html.parser")
 
-  def getClasses(self):
-    for module in self.soup.findAll("a", attrs={"class":"s2skemabrik"}):
+  def getModules(self):
+    modules = []
+    #html-modul-elementerne bliver udvalgt via deres class-attribut
+    for module in self.__soup.findAll("a", attrs={"class":"s2skemabrik", "class": "s2bgbox"}):
       moduel_text = module.get("data-tooltip", "")
       if moduel_text:
-        self.modules.append(moduel_text)
-
-
-
-
-
-
-LectioScraper = Scraper(sessionId, autoLoginKey, "https://www.lectio.dk/lectio/518/SkemaNy.aspx")
-LectioScraper.getClasses()
-print(LectioScraper.modules)
-
-
+        modules.append(moduel_text)
+    return modules
 
