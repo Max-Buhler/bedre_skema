@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
-class Schelude
-  def __init__(self):
+# class Schelude
+#   def __init__(self):
 
 def create_schedule():
     root = tk.Tk()
