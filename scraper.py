@@ -14,7 +14,8 @@ class Scraper:
       if(year is None):
         response = requests.get(URL + "?week=" + week + "2025", cookies=self.__cookies)
       else:
-        response = requests.get(URL + "?week=" + week + "2025", cookies=self.__cookies)
+
+        response = requests.get(URL + "?week=" + week + year, cookies=self.__cookies)
     #html-koden laves om til en string
     clean_text = response.text.encode("utf-8", "ignore").decode("utf-8")
     self.__soup = BeautifulSoup(clean_text, "html.parser")
