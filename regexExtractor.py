@@ -6,7 +6,7 @@ class RegexExtractor:
     self.__timeRegex = r"\d{1,2}/\d{1,2}-2025 (\d{1,2}:\d{2}) til (\d{1,2}:\d{2})"
     self.__teacherRegex = r"Lærer: (([A-Z][a-z]+(?:\s[A-Z][a-z]+)*) \(([a-z]{1,4})\))+"
     self.__roomRegex = r"Lokale: ([A-Z][0-9]{3}s)"
-    self.__teamRegex = r"Hold: ([A-Z][0-9][a-z]*\s+[A-Za-z]{2,3}\s+([A-Za-z]{2,3})*)"
+    self.__teamRegex = r"Hold: ([A-Z][0-9][a-z]?\s+[A-Za-z]{2,3}\s+([A-Za-z]{2,3})*)"
     self.__cancelledRegex = r"Aflyst!" 
     self.__noteRegex = r"Note:(.*)"
     self.__homeworkRegex = r"Lektier:(.*?)(Øvrigt indhold|Note|$)"
@@ -15,7 +15,7 @@ class RegexExtractor:
   #de specifikke informationer bliver fundet i html-stringen via regexene og __extractGroup metoden, hvorefter de bliver returneret som en dictionary
   def getData(self, indhold,year):
       self.__dateRegex = r"\d{1,2}/\d{1,2}-"+year
-      self.__timeRegex = r"\d{1,2}/\d{1,2}-" + year + " (\d{1,2}:\d{2}) til (\d{1,2}:\d{2})"
+      self.__timeRegex = r"\d{1,2}/\d{1,2}-" + year + r" (\d{1,2}:\d{2}) til (\d{1,2}:\d{2})"
 
       result = {
          

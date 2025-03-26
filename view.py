@@ -11,10 +11,7 @@ class View:
 
         self.__year, self.__week, _ = datetime.today().isocalendar()
         #Går uge læsbar for getSkema funktionen
-        if self.__week < 10:
-            self.weekStr = f"0{self.__week}"
-        else:
-            self.weekStr = f"{self.__week}"
+
     
     def draw(self,data,controller):
         self.controller = controller
