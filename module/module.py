@@ -55,4 +55,4 @@ class UserModel():
 um = UserModel()
 # print(um.getSkema({'type': 'skema', 'week': '15', 'year': '2025'}))
 # print(um.getSkema({'type': 'skema'}))
-print(um.getOpgaver({}))
+# print(um.getOpgaver({}))
