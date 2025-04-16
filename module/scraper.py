@@ -7,15 +7,18 @@ class Scraper:
 
   #lectio's html-kode findes og defineres til __soup
   def getHTML(self, URL, week, year):
-    #via betingelser findes der ud af om år og uge er defineret
+    #via betingelser findes der ud af om år og uge er defineret. Desuden sikres der at ugen er tocifret
     if(week is None):
-      response = requests.get(URL, cookies=self.__cookies)
+      url = URL
+    elif(year is None):
+      if(int(week) < 10):
+        week = f"0{week}"
+      url = URL + "?week=" + week + "2025"
     else:
-      if(year is None):
-        response = requests.get(URL + "?week=" + week + "2025", cookies=self.__cookies)
-      else:
-
-        response = requests.get(URL + "?week=" + week + year, cookies=self.__cookies)
+      if(int(week) < 10):
+        week = f"0{week}"
+      url = URL + "?week=" + week + year
+    response = requests.get(url, cookies=self.__cookies)
     #html-koden laves om til en string
     clean_text = response.text.encode("utf-8", "ignore").decode("utf-8")
     self.__soup = BeautifulSoup(clean_text, "html.parser")

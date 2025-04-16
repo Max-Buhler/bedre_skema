@@ -1,4 +1,4 @@
-from module import *
+from module.module import *
 from view import *
 
 class Controller:

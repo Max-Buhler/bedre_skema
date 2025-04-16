@@ -1,5 +1,5 @@
-from regexExtractor import *
-from scraper import *
+from module.regexExtractor import *
+from module.scraper import *
 from dotenv import load_dotenv
 import os
 class UserModel():
@@ -14,7 +14,7 @@ class UserModel():
     } 
     #En opslags variabel, hvis klassen engang skal håndtere flere requests
     self.__urldict = {
-      'skema': 'https://www.lectio.dk/lectio/518/skemany.aspx'
+      'skema': 'https://www.lectio.dk/lectio/518/skemaNy.aspx'
     }
     #Laver instandser af importerede klasser
     self.__scraper = Scraper(self.__cookies)
@@ -23,20 +23,14 @@ class UserModel():
   #Ved brug af scraperen og regex-klassen reuturneres en liste af den specificerede uges moduler
   def getSkema(self, req):
     #et udvalgt stykke af html-koden returneres som string
-
-    if int(req.get("week", None)) < 10:
-      self.__weekStr = f"0{req.get("week", None)}"
-    else:
-      self.__weekStr = f"{req.get("week", None)}"
-
-    self.__scraper.getHTML(self.__urldict[req['type']], self.__weekStr, req.get("year", None))
+    self.__scraper.getHTML(self.__urldict[req['type']], req.get("week", None), req.get("year", None))
     modulesList = self.__scraper.getModules()
     #html-stringen omdannes til dictionaries
     moduleData = []
     for module in modulesList:
-      moduleData.append(self.__regexExtractor.getData(module,req.get("year", None)))
+      moduleData.append(self.__regexExtractor.getData(module))
     return moduleData
 #eksempel
 um = UserModel()
-# print(um.getSkema({'type': 'skema', 'week': '13', 'year': '2025'}))
+print(um.getSkema({'type': 'skema', 'week': '9', 'year': '2024'}))
 # print(um.getSkema({'type': 'skema'}))
