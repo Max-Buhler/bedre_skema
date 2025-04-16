@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 class UserModel():
   def __init__(self):
-    #henter variabler fra .env fil
+    #henter og definerer variabler fra .env fil
     load_dotenv()
     sessionId = os.getenv('SESSION_ID')
     autoLoginKey = os.getenv('AUTO_LOGIN_KEY')
@@ -17,22 +17,24 @@ class UserModel():
   def getSkema(self, req):
     self.__scraper = SkemaScraper(self.__cookies)
     self.__regexExtractor = SkemaRegexExtractor()
-    #et udvalgt stykke af html-koden returneres som string
+    #et udvalgt stykke af html-koden returneres som liste af moduler (som strings)
     self.__scraper.getHTML('https://www.lectio.dk/lectio/518/skemaNy.aspx', req.get("week", None), req.get("year", None))
     modulesList = self.__scraper.getItems()
-    #html-stringen omdannes til dictionaries
+    #html-stringen omdannes til dictionaries via regexklassen
     moduleData = []
     for module in modulesList:
       moduleData.append(self.__regexExtractor.getData(module))
     return moduleData
   
-  def getOpgaver(self, req):
+  #Ved brug af scraperen og regex-klassen reuturneres en liste af årets opgaver
+  def getOpgaver(self):
     self.__scraper = OpgaveScraper(self.__cookies)
     self.__regexExtractor = OpgaveRegexExtractor()
-    #et udvalgt stykke af html-koden returneres som string
+    #et udvalgt stykke af html-koden returneres som en liste af opgaver (som dictionaries)
     self.__scraper.getHTML('https://www.lectio.dk/lectio/518/OpgaverElev.aspx')
     taskList = self.__scraper.getItems()
     taskData = []
+    #dictionaryen modificeres lidt via regexklassen, for at splitte frist op i dato og tid
     for task in taskList:
       regResult = self.__regexExtractor.getData(task["dueDate"])
       taskData.append({
@@ -55,4 +57,4 @@ class UserModel():
 um = UserModel()
 # print(um.getSkema({'type': 'skema', 'week': '15', 'year': '2025'}))
 # print(um.getSkema({'type': 'skema'}))
-# print(um.getOpgaver({}))
+# print(um.getOpgaver())

@@ -50,6 +50,7 @@ class OpgaveRegexExtractor(RegexExtractor):
   def __init__(self):
     super().__init__()
   
+  #de specifikke informationer bliver fundet i html-stringen via regexene og __extractGroup metoden, hvorefter de bliver returneret som en dictionary
   def getData(self, indhold):
     result = {
       "dueDate": self._extractGroup(self._dueDateRegex, indhold, 1),

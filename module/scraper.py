@@ -10,16 +10,16 @@ class Scraper:
     #html-koden laves om til en string
     clean_text = response.text.encode("utf-8", "ignore").decode("utf-8")
     self._soup = BeautifulSoup(clean_text, "html.parser")
-    # print(self._soup)
 
   def getItems(self):
     pass
 
+#subklasse af scraper, der scraper lectioskemaet
 class SkemaScraper(Scraper):
   def __init__(self, cookies):
     super().__init__(cookies)
 
-  #lectio's html-kode findes og defineres til _soup
+  #lectio's skema-html-kode hentes og defineres til _soup
   def getHTML(self, URL, week, year):
     #via betingelser findes der ud af om år og uge er defineret. Desuden sikres der at ugen er tocifret
     if(week is None):
@@ -34,6 +34,7 @@ class SkemaScraper(Scraper):
       url = URL + "?week=" + week + year
     super().getHTML(url)
 
+  #html-koden bliver reduceret til de enkelte timers beskrivelser
   def getItems(self):
     modules = []
     #html-modul-elementerne bliver udvalgt via deres class-attribut
@@ -43,15 +44,19 @@ class SkemaScraper(Scraper):
         modules.append(moduel_text)
     return modules
 
+#subklasse af scraper, der scraper lectioopgaver
 class OpgaveScraper(Scraper):
   def __init__(self, cookies):
     super().__init__(cookies)
+    #navne til opgave-dictionarys nøgler
     self.__dictNøgler = ["week", "team", "title", "dueDate", "studyTime", "status", "absence", "waiting", "note", "grade", "studentNote"]
   
+  #html-kode bliver reduceret til et dictionary med opgavernes oplysninger
   def getItems(self):
     tasks = []
     for task in self._soup.findAll("tr", attrs={"class": "separationCell"}):
       taskDict = {}
+      #hvert td-element har en af værdierne til en af de forigt definerede nøgler. Via forloopens index flættes nøglen og td-elementets værdi sammen i et dictionary
       for index, element in enumerate(task.findAll("td", attrs={"class": "OnlyDesktop"})):
         tekst = element.get_text(separator='\n', strip=True)
         taskDict[self.__dictNøgler[index]] = tekst
