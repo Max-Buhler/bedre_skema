@@ -5,6 +5,7 @@ class Scraper:
   def __init__(self, cookies):
     self._cookies = cookies
   
+  #HTML kode hentes som string
   def getHTML(self, URL):
     response = requests.get(URL, cookies=self._cookies)
     #html-koden laves om til en string
@@ -12,7 +13,7 @@ class Scraper:
     self._soup = BeautifulSoup(clean_text, "html.parser")
 
   def getItems(self):
-    pass
+    raise NotImplementedError("Subclasses must implement this method.")
 
 #subklasse af scraper, der scraper lectioskemaet
 class SkemaScraper(Scraper):
@@ -62,4 +63,3 @@ class OpgaveScraper(Scraper):
         taskDict[self.__dictNøgler[index]] = tekst
       tasks.append(taskDict)
     return tasks
-

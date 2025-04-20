@@ -15,7 +15,7 @@ class RegexExtractor:
     self._dueDateRegex = r"(\d{1,2}/\d{1,2}-\d{4}) (\d{1,2}:\d{2})"
 
   def getData(self):
-     pass
+    raise NotImplementedError("Subclasses must implement this method.")
   
   #En metode, som tester om regexen har fundet et match og returner værdien, hvis den er fundet (den extraherer altså regexens output)
   def _extractGroup(self, regex, text, group_num):
