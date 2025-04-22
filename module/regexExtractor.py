@@ -29,19 +29,19 @@ class SkemaRegexExtractor(RegexExtractor):
     super().__init__()
 
   #de specifikke informationer bliver fundet i html-stringen via regexene og __extractGroup metoden, hvorefter de bliver returneret som en dictionary
-  def getData(self, indhold):
+  def getData(self, content):
       
       result = {
-        "date": self._extractGroup(self._dateRegex, indhold, 1),
-        "timeFrom": self._extractGroup(self._timeRegex, indhold, 1),
-        "timeTo": self._extractGroup(self._timeRegex, indhold, 2),
-        "teacher": self._extractGroup(self._teacherRegex, indhold, 1),
-        "room": self._extractGroup(self._roomRegex, indhold, 1),
-        "team": self._extractGroup(self._teamRegex, indhold, 1),
-        "cancelled": True if re.search(self._cancelledRegex, indhold) else False,
-        "note": self._extractGroup(self._noteRegex, indhold, 1),
-        "homework": self._extractGroup(self._homeworkRegex, indhold, 1),
-        "other": self._extractGroup(self._otherRegex, indhold, 1)
+        "date": self._extractGroup(self._dateRegex, content, 1),
+        "timeFrom": self._extractGroup(self._timeRegex, content, 1),
+        "timeTo": self._extractGroup(self._timeRegex, content, 2),
+        "teacher": self._extractGroup(self._teacherRegex, content, 1),
+        "room": self._extractGroup(self._roomRegex, content, 1),
+        "team": self._extractGroup(self._teamRegex, content, 1),
+        "cancelled": True if re.search(self._cancelledRegex, content) else False,
+        "note": self._extractGroup(self._noteRegex, content, 1),
+        "homework": self._extractGroup(self._homeworkRegex, content, 1),
+        "other": self._extractGroup(self._otherRegex, content, 1)
       }
       return result
 

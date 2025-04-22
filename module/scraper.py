@@ -9,8 +9,8 @@ class Scraper:
   def getHTML(self, URL):
     response = requests.get(URL, cookies=self._cookies)
     #html-koden laves om til en string
-    clean_text = response.text.encode("utf-8", "ignore").decode("utf-8")
-    self._soup = BeautifulSoup(clean_text, "html.parser")
+    cleanText = response.text.encode("utf-8", "ignore").decode("utf-8")
+    self._soup = BeautifulSoup(cleanText, "html.parser")
 
   def getItems(self):
     raise NotImplementedError("Subclasses must implement this method.")
@@ -50,7 +50,7 @@ class OpgaveScraper(Scraper):
   def __init__(self, cookies):
     super().__init__(cookies)
     #navne til opgave-dictionarys nøgler
-    self.__dictNøgler = ["week", "team", "title", "dueDate", "studyTime", "status", "absence", "waiting", "note", "grade", "studentNote"]
+    self.__dictKeys = ["week", "team", "title", "dueDate", "studyTime", "status", "absence", "waiting", "note", "grade", "studentNote"]
   
   #html-kode bliver reduceret til et dictionary med opgavernes oplysninger
   def getItems(self):
@@ -60,6 +60,6 @@ class OpgaveScraper(Scraper):
       #hvert td-element har en af værdierne til en af de forigt definerede nøgler. Via forloopens index flættes nøglen og td-elementets værdi sammen i et dictionary
       for index, element in enumerate(task.findAll("td", attrs={"class": "OnlyDesktop"})):
         tekst = element.get_text(separator='\n', strip=True)
-        taskDict[self.__dictNøgler[index]] = tekst
+        taskDict[self.__dictKeys[index]] = tekst
       tasks.append(taskDict)
     return tasks

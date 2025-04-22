@@ -17,20 +17,20 @@ class UserModel():
     self.__extractors = {}
 
   #slags getter-metode, der samtidig tjekker om der allereded findes en instands af klassen
-  def __get_scraper(self, scraper_cls):
+  def __getScraper(self, scraper_cls):
       if scraper_cls not in self.__scrapers:
           self.__scrapers[scraper_cls] = scraper_cls(self.__cookies)
       return self.__scrapers[scraper_cls]
   
-  def __get_extractor(self, extractor_cls):
+  def __getExtractor(self, extractor_cls):
       if extractor_cls not in self.__extractors:
           self.__extractors[extractor_cls] = extractor_cls()
       return self.__extractors[extractor_cls]
 
   #Ved brug af scraperen og regex-klassen reuturneres en liste af den specificerede uges moduler
   def getSkema(self, req):
-    scraper = self.__get_scraper(SkemaScraper)
-    extractor = self.__get_extractor(SkemaRegexExtractor)
+    scraper = self.__getScraper(SkemaScraper)
+    extractor = self.__getExtractor(SkemaRegexExtractor)
     #et udvalgt stykke af html-koden returneres som liste af moduler (moduler er strings)
     scraper.getHTML('https://www.lectio.dk/lectio/518/skemaNy.aspx', req.get("week", None), req.get("year", None))
     modulesList = scraper.getItems()
@@ -42,8 +42,8 @@ class UserModel():
   
   #Ved brug af scraperen og regex-klassen reuturneres en liste af årets opgaver
   def getOpgaver(self):
-    scraper = self.__get_scraper(OpgaveScraper)
-    extractor = self.__get_extractor(OpgaveRegexExtractor)
+    scraper = self.__getScraper(OpgaveScraper)
+    extractor = self.__getExtractor(OpgaveRegexExtractor)
     #et udvalgt stykke af html-koden returneres som en liste af opgaver (opgaver er dictionaries)
     scraper.getHTML('https://www.lectio.dk/lectio/518/OpgaverElev.aspx')
     taskList = scraper.getItems()
